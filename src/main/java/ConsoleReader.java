@@ -14,16 +14,25 @@ public class ConsoleReader {
 
             try {
                 switch (inp) {
-                    case ("c") -> createNewUser();
-                    case ("ra") -> loadAllUser();
-                    case ("r") -> loadUserById();
-                    case ("u") -> updateUser();
-                    case ("d") -> deleteUserById();
-                    case ("e") -> {
+                    case "c" :
+                        createNewUser();
+                        break;
+                    case "ra" :
+                        loadAllUser();
+                        break;
+                    case "r" :
+                        loadUserById();
+                        break;
+                    case "u" :
+                        updateUser();
+                        break;
+                    case "d" :
+                        deleteUserById();
+                        break;
+                    case "e" :
                         System.out.println("Завершение программы");
                         isContinue = false;
-                        return;
-                    }
+                        break;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
