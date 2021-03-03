@@ -56,7 +56,12 @@ public class ConsoleReader {
     }
 
     public static void loadAllUser() {
-        UserService.getAll().forEach(System.out::println);
+        List<User> users = UserService.getAll();
+        if (users.isEmpty()){
+            System.out.println("Нет ни одного пользователя");
+        } else {
+            UserService.getAll().forEach(System.out::println);
+        }
     }
 
     public static void loadUserById() {
