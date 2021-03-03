@@ -1,6 +1,3 @@
-import com.mongodb.DBObject;
-import org.bson.types.ObjectId;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -49,7 +46,7 @@ public class ConsoleReader {
         }
     }
 
-    public static void loadAllUser(){
+    public static void loadAllUser() {
         UserService.getAll().forEach(System.out::println);
     }
 
@@ -59,19 +56,19 @@ public class ConsoleReader {
         System.out.println(UserService.getById(hexId));
     }
 
-    public static void updateUser(){
+    public static void updateUser() {
         List<User> users = UserService.getAll();
         System.out.println("Введите индекс редактируемого пользователя");
         for (int i = 1; i <= users.size(); i++) {
-            System.out.println(i + ". " + users.get(i-1));
+            System.out.println(i + ". " + users.get(i - 1));
         }
         int index = console.nextInt();
         console.skip("\n");
-        if (index<1 || index > users.size()) {
+        if (index < 1 || index > users.size()) {
             System.out.println("введен некорректный индекс");
             return;
         }
-        User editableUser = users.get(index-1);
+        User editableUser = users.get(index - 1);
         System.out.println("Введите имя пользователя");
         String name = console.nextLine();
         editableUser.setName(name);
