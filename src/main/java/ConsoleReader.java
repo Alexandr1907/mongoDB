@@ -1,6 +1,7 @@
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleReader {
@@ -14,18 +15,23 @@ public class ConsoleReader {
             System.out.println("\nВыберите действие:\nc  - create\nr  - read\nra - readAll\nu  - update\nd  - delete\ne  - exit\n");
             String inp = console.nextLine();
 
-            switch (inp) {
-                case ("c") -> createNewUser();
-                case ("ra") -> loadAllUser();
-                case ("r") -> loadUserById();
-                case ("u") -> updateUser();
-                case ("d") -> deleteUserById();
-                case ("e") -> {
-                    System.out.println("Завершение программы");
-                    isContinue = false;
-                    return;
+            try {
+                switch (inp) {
+                    case ("c") -> createNewUser();
+                    case ("ra") -> loadAllUser();
+                    case ("r") -> loadUserById();
+                    case ("u") -> updateUser();
+                    case ("d") -> deleteUserById();
+                    case ("e") -> {
+                        System.out.println("Завершение программы");
+                        isContinue = false;
+                        return;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -54,15 +60,32 @@ public class ConsoleReader {
     }
 
     public static void updateUser(){
-        System.out.println("Введите ид пользователя");
-        String hexId = console.nextLine();
+        List<User> users = UserService.getAll();
+        System.out.println("Введите индекс редактируемого пользователя");
+        for (int i = 1; i <= users.size(); i++) {
+            System.out.println(i + ". " + users.get(i-1));
+        }
+        int index = console.nextInt();
+        console.skip("\n");
+        if (index<1 || index > users.size()) {
+            System.out.println("введен некорректный индекс");
+            return;
+        }
+        User editableUser = users.get(index-1);
         System.out.println("Введите имя пользователя");
         String name = console.nextLine();
+        editableUser.setName(name);
         System.out.println("Введите возраст пользователя");
         int age = console.nextInt();
         console.skip("\n");
+        editableUser.setAge(age);
 
-        UserService.update(new User(new ObjectId(hexId), name, age));
+        boolean isSuccess = UserService.update(editableUser);
+        if (isSuccess) {
+            System.out.println("Пользователь успешно изменен");
+        } else {
+            System.out.println("При сохранении изменений произошла ошибка");
+        }
     }
 
     public static void deleteUserById() {
